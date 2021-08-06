@@ -285,6 +285,18 @@ async def schedule(ctx):
     await ctx.send(file=discord.File('media/schedule3.png'))
 
 
+# provides activity school schedule pic
+@bot.command(brief="sends activity school schedule", description="sends activity school schedule", aliases=["a_schedule", "aschedule", "activity"])
+async def activity_schedule(ctx):
+    await ctx.send(file=discord.File('media/activitySchedule.png'))
+
+
+# provides special school schedule pic
+@bot.command(brief="sends special school schedule (white/virtual)", description="sends special school schedule (white/virtual)", aliases=["s_schedule", "sschedule", "special"])
+async def special_schedule(ctx):
+    await ctx.send(file=discord.File('media/specialSchedule.png'))
+
+
 # get names of servers that bot belongs to
 @bot.command()
 @commands.is_owner()
