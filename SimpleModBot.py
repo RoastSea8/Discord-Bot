@@ -137,6 +137,9 @@ async def on_reaction_add(reaction, user):
                             embed.add_field(name=command, value=command.description, inline=True)
                         for command in Calendar.__cog_commands__:
                             embed.add_field(name=command, value=command.description, inline=True)
+                        for command in bot.commands:
+                            if (command == map):
+                                embed.add_field(name=command, value=command.description, inline=True)
                     elif reaction.emoji == '🦦':
                         embed = discord.Embed(title="Kermit's commands 🦦", description=f"__{len(bot.commands) - 10} Other Commands__", color=help_msg.embeds[0].color)
                         for command in Time.__cog_commands__:
@@ -277,6 +280,12 @@ async def invite(ctx):
     )
     embed.set_image(url=config['invite_img_url'])
     await ctx.send(embed=embed)
+
+
+# provides American map pic
+@bot.command(brief="sends American map pic", description="shows picture of American map")
+async def map(ctx):
+    await ctx.send(file=discord.File('media/USmap.gif'))
 
 
 # provides school schedule pic
