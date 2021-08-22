@@ -341,7 +341,7 @@ async def secret(ctx, guild_name, channel_name, *, message):
                 await channel.send(message)
 
 emojis = ['🤡', '😐', '😳', '🧢', '🏳️‍🌈', '💩', '😈', '🤓']
-servers = ['BotTestingServer', 'battle bus', 'FW_OUI', 'The New Boys and I']
+servers = ['BotTestingServer']
 
 
 @bot.event
