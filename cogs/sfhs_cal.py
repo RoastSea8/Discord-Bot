@@ -49,7 +49,7 @@ class Calendar(commands.Cog):
 
         await ctx.send("Getting calendar - please wait patiently, est. wait time 5-10 seconds")
 
-        user_month = month
+        user_month = month.lower()
 
         GOOGLE_CHROME_PATH = os.environ['GOOGLE_CHROME_BIN']
         CHROMEDRIVER_PATH = os.environ['CHROMEDRIVER_PATH']
