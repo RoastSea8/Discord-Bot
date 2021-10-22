@@ -17,7 +17,7 @@ class Status(commands.Cog):
         total_members = 0
         for guild in self.bot.guilds:
             total_members += guild.member_count
-        self.status = ["with 9 minute old babies", 'republican female senators', f"{total_members} oysters get pooped on"] # ,help | @Kermit, f"on {len(self.bot.guilds)} servers"
+        self.status = ["red light, green light", 'the sound of tempered glass', f"{total_members} billion won in my account"] # ,help | @Kermit, f"on {len(self.bot.guilds)} servers"
 
         self.activity = cycle([discord.Game(name=self.status[0]), discord.Activity(type=discord.ActivityType.listening,
                         name=(self.status[1])), discord.Activity(type=discord.ActivityType.watching, name=(self.status[2]))])
