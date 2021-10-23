@@ -170,10 +170,12 @@ async def delete(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
 
 
+editMsgList = []
 # text-through command
 @bot.command()
 @commands.is_owner()
 async def say(ctx, arg1, *, arg):
+    global editMsgList
     if arg1.isnumeric():
         arg1 = int(arg1)
     else:
@@ -184,20 +186,25 @@ async def say(ctx, arg1, *, arg):
     except IndexError:
         pass
     await channel.trigger_typing()
-    await channel.send(arg)
+    msg = await channel.send(arg)
+    try:
+        editMsgList.append((arg1, msg.id))
+    except:
+        pass
 
 
 # edit command
 @bot.command()
 @commands.is_owner()
-async def edit(ctx, _channel, msg_id : int, *, edited):
-    if _channel.isnumeric():
-            _channel = int(_channel)
-    else:
-        _channel = config[_channel]
-    channel = bot.get_channel(_channel)
-    message = await channel.fetch_message(msg_id)
-    await message.edit(content=str(edited))
+async def edit(ctx, msgIndex: int, *, edited):
+    global editMsgList
+    try:
+        _channel = editMsgList[-msgIndex][0]
+        channel = bot.get_channel(_channel)
+        message = await channel.fetch_message(editMsgList[-msgIndex][1])
+        await message.edit(content=str(edited))
+    except:
+        return
 
 
 # speak command
