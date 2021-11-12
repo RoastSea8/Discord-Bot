@@ -164,6 +164,24 @@ async def on_reaction_add(reaction, user):
             return
 
 
+@bot.command(description="disables commands")
+@commands.is_owner()
+async def disable(ctx, cmd):
+    for command in bot.commands:
+        if str(command) == cmd:
+            command.update(enabled=False)
+            await ctx.send(f"{command} disabled")
+
+
+@bot.command(description="enables commands")
+@commands.is_owner()
+async def enable(ctx, cmd):
+    for command in bot.commands:
+        if str(command) == cmd:
+            command.update(enabled=True)
+            await ctx.send(f"{command} enabled")
+
+
 @bot.command(description="clears entered amount of messages")
 @commands.check_any(commands.has_permissions(administrator=True), commands.is_owner())
 async def delete(ctx, amount: int):
@@ -492,8 +510,7 @@ async def unban(ctx, *, member):
 @commands.is_owner()
 async def load(ctx, extension):
     bot.load_extension(f'cogs.{extension}')
-    channel = await bot.fetch_channel(config['blue'])
-    await channel.send(f'{extension} loaded successfully.')
+    await ctx.send(f'{extension} loaded successfully.')
 
 
 # load cog command
@@ -501,8 +518,7 @@ async def load(ctx, extension):
 @commands.is_owner()
 async def _reload(ctx, extension):
     bot.reload_extension(f'cogs.{extension}')
-    channel = await bot.fetch_channel(config['blue'])
-    await channel.send(f'{extension} reload successfully.')
+    await ctx.send(f'{extension} reload successfully.')
 
 
 # unload cog command
@@ -510,8 +526,7 @@ async def _reload(ctx, extension):
 @commands.is_owner()
 async def unload(ctx, extension):
     bot.unload_extension(f'cogs.{extension}')
-    channel = await bot.fetch_channel(config['blue'])
-    await channel.send(f'{extension} unloaded successfully.')
+    await ctx.send(f'{extension} unloaded successfully.')
 
 # loading all cogs
 for filename in os.listdir('./cogs'):
