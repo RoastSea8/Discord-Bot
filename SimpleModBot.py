@@ -10,6 +10,8 @@ from discord.ext.commands import has_permissions, MissingPermissions, guild_only
 from discord.utils import get
 import asyncio
 import sys
+import requests
+from bs4 import BeautifulSoup
 from cogs.define import Define
 from cogs.howdoi import Howdoi
 from cogs.jokes import Jokes
@@ -186,6 +188,15 @@ async def enable(ctx, cmd):
 @commands.check_any(commands.has_permissions(administrator=True), commands.is_owner())
 async def delete(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
+
+
+@bot.command(description="returns images of input from Google")
+async def search(ctx, *, query):
+    res = requests.get("https://www.google.co.in/search?q="+query+"&source=lnms&tbm=isch")
+    soup = BeautifulSoup(res.text, 'html.parser')
+    results = soup.find_all("img")[1:4]
+    for i in results:
+        await ctx.send(i["src"])
 
 
 editMsgList = []
