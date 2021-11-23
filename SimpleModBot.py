@@ -518,7 +518,7 @@ async def unban(ctx, *, member):
 
 
 # language translate command
-@bot.command(description="<lang to translate to> <message>")
+@bot.command(description="<lang to translate to> <message>", aliases=['tr', 't', 'tra', 'tran', 'trans'])
 async def translate(ctx, lang, *, msg):
     translator = Translator()
     translation = translator.translate(msg, dest=lang)
