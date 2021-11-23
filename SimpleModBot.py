@@ -12,6 +12,7 @@ import asyncio
 import sys
 import requests
 from bs4 import BeautifulSoup
+from googletrans import Translator
 from cogs.define import Define
 from cogs.howdoi import Howdoi
 from cogs.jokes import Jokes
@@ -514,6 +515,14 @@ async def unban(ctx, *, member):
             await ctx.guild.unban(user)
             await ctx.send(f'Unbanned {user.mention}')
             return
+
+
+# language translate command
+@bot.command(description="<lang to translate to> <message>")
+async def translate(ctx, lang, *, msg):
+    translator = Translator()
+    translation = translator.translate(msg, dest=lang)
+    await ctx.send(translation.text)
 
 
 # load cog command
