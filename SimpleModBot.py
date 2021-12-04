@@ -485,6 +485,15 @@ async def on_guild_update(before, after):
     if before.name != after.name:
         await channel.send(f'{before.name} was changed to {after.name}')
 
+    _guild = bot.get_guild(config['bot_testing_server'])
+    category = discord.utils.get(_guild.categories, name="servers")
+    old_gld_name = (str(before.name)).lower()
+    old_gld_name = old_gld_name.replace(' ', '-')
+    new_gld_name = (str(after.name)).lower()
+    new_gld_name = new_gld_name.replace(' ', '-')
+    server_channel = get(_guild.text_channels, name=old_gld_name)
+    await server_channel.edit(name=new_gld_name)
+
 
 # kick command
 @bot.command(description="kicks members: `kick <member>`")
