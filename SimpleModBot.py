@@ -191,6 +191,16 @@ async def delete(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
 
 
+@bot.command(description="deletes channel")
+@commands.is_owner()
+async def delete_channel(ctx, channel_name):
+    existing_channel = discord.utils.get(ctx.guild.channels, name=channel_name)
+    if existing_channel is not None:
+        await existing_channel.delete()
+    else:
+        await ctx.send(f'No channel named, "{channel_name}", was found')
+
+
 @bot.command(description="returns images of input from Google")
 async def search(ctx, *, query):
     res = requests.get("https://www.google.co.in/search?q="+query+"&source=lnms&tbm=isch")
