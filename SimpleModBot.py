@@ -191,14 +191,20 @@ async def delete(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
 
 
-@bot.command(description="deletes channel")
+@bot.command(description="deletes channel", aliases=["d_c"])
 @commands.is_owner()
 async def delete_channel(ctx, channel_name):
-    existing_channel = discord.utils.get(ctx.guild.channels, name=channel_name)
-    if existing_channel is not None:
-        await existing_channel.delete()
+    await ctx.send(f"Are you sure you want to delete channel {channel_name}?")
+    msg = await bot.wait_for(event='message', check=lambda message: message.author == ctx.author, timeout=10.0)
+    if msg.content == "yes" or msg.content == "Yes":
+        existing_channel = discord.utils.get(ctx.guild.channels, name=channel_name)
+        if existing_channel is not None:
+            await existing_channel.delete()
+            await ctx.send(f"{channel_name} deleted")
+        else:
+            await ctx.send(f'No channel named, "{channel_name}", was found')
     else:
-        await ctx.send(f'No channel named, "{channel_name}", was found')
+        await ctx.send(f"deletion of {channel_name} canceled")
 
 
 @bot.command(description="returns images of input from Google")
