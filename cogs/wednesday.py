@@ -20,11 +20,11 @@ class Wednesday(commands.Cog):
         self.time = datetime.datetime.now
         if self.time().hour == 12:
             if datetime.datetime.today().weekday() == 2:
-                try:
-                    self.channel = await self.bot.fetch_channel(config['g'])
-                    await self.channel.send(file=discord.File('media/wednesday_pic.png'))
-                except:
-                    pass
+                # try:
+                #     self.channel = await self.bot.fetch_channel(config['g'])
+                #     await self.channel.send(file=discord.File('media/wednesday_pic.png'))
+                # except:
+                #     pass
 
                 try:
                     self.channel = await self.bot.fetch_channel(config['fg'])
