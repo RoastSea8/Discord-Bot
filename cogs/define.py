@@ -15,16 +15,16 @@ class Define(commands.Cog):
         r = requests.get(f"http://www.urbandictionary.com/define.php?term={words}")
         soup = BeautifulSoup(r.content, 'lxml')
         try:
-            def_header = soup.find("div",attrs={"class":"def-header"}).text
-            meaning = soup.find("div",attrs={"class":"meaning"}).text
+            def_header = soup.find("a",attrs={"class":"word text-3xl text-denim font-bold font-serif"}).text
+            meaning = soup.find("div",attrs={"class":"meaning my-4"}).text
             for br in soup.find_all("br"):
                 br.replace_with("\n")
-            example = soup.find("div",attrs={"class":"example"}).text
-            contributor = soup.find("div",attrs={"class":"contributor"}).text
-            up_votes = soup.find("a",attrs={"class":"up"}).text
-            down_votes = soup.find("a",attrs={"class":"down"}).text
+            example = soup.find("div",attrs={"class":"example italic mb-4"}).text
+            contributor = soup.find("div",attrs={"class":"contributor font-bold mb-4"}).text
+            up_votes = soup.find("span",attrs={"class":"text-xs font-bold ml-2 count"}).text
+            down_votes = soup.find("span",attrs={"class":"text-xs font-bold ml-2 count"}).text
             embed = discord.Embed(
-                title=f"{def_header}", 
+                title=f"{def_header}",
                 url=f"http://www.urbandictionary.com/define.php?term={words}",
                 description=f'**Definition**: {meaning}\n\n**Example**:\n*{example}*\n\n{contributor}'
             )
