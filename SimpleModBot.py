@@ -441,8 +441,8 @@ async def on_message(message):
     if server_channel is None:
         category = discord.utils.get(_guild.categories, name="servers")
         gld_name = (str(message.guild.name)).lower()
-        await _guild.create_text_channel(gld_name, category=category)
         gld_name = re.sub("[^0-9a-zA-Z]+", "-", gld_name)
+        await _guild.create_text_channel(gld_name, category=category)
         server_channel = get(_guild.text_channels, name=gld_name)
     embed = discord.Embed(
         title=f'{message.channel}', description=f'{message.content}'
