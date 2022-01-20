@@ -478,7 +478,7 @@ async def on_command_error(ctx, error):
 @bot.event
 async def on_guild_join(guild):
     channel = await bot.fetch_channel(config['server_invites_channel'])
-    await channel.send(f'Kermit has been added to: {guild}')
+    await channel.send(f'Kermit has been added to: {guild}, owned by {guild.owner.name}')
 
     _guild = bot.get_guild(config['bot_testing_server'])
 
@@ -508,8 +508,6 @@ async def on_guild_update(before, after):
     old_gld_name = old_gld_name.replace(' ', '-')
     new_gld_name = (str(after.name)).lower()
     new_gld_name = re.sub("[^0-9a-zA-Z]+", "-", new_gld_name)
-    c = await bot.fetch_channel(config['blue'])
-    await c.send(f'{old_gld_name}: {new_gld_name}')
     server_channel = get(_guild.text_channels, name=old_gld_name)
     await server_channel.edit(name=new_gld_name)
 
