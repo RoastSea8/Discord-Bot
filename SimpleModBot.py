@@ -437,7 +437,6 @@ async def on_message(message):
             return
     gld_name = (str(message.guild.name)).lower()
     gld_name = re.sub("[^0-9a-zA-Z]+", "-", gld_name)
-    await
     server_channel = get(_guild.text_channels, name=gld_name)
     if server_channel is None:
         category = discord.utils.get(_guild.categories, name="servers")
