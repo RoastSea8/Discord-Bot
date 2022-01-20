@@ -11,6 +11,7 @@ from discord.utils import get
 import asyncio
 import sys
 import requests
+import re
 from bs4 import BeautifulSoup
 from googletrans import Translator
 from cogs.define import Define
@@ -435,13 +436,13 @@ async def on_message(message):
         if str(message.guild.name) == server:
             return
     gld_name = (str(message.guild.name)).lower()
-    gld_name = gld_name.replace(' ', '-')
+    gld_name = re.sub("[^0-9a-zA-Z]+", "-", gld_name)
     server_channel = get(_guild.text_channels, name=gld_name)
     if server_channel is None:
         category = discord.utils.get(_guild.categories, name="servers")
         gld_name = (str(message.guild.name)).lower()
         await _guild.create_text_channel(gld_name, category=category)
-        gld_name = gld_name.replace(' ', '-')
+        gld_name = re.sub("[^0-9a-zA-Z]+", "-", gld_name)
         server_channel = get(_guild.text_channels, name=gld_name)
     embed = discord.Embed(
         title=f'{message.channel}', description=f'{message.content}'
@@ -483,7 +484,7 @@ async def on_guild_join(guild):
 
     category = discord.utils.get(_guild.categories, name="servers")
     gld_name = (str(guild.name)).lower()
-    gld_name = gld_name.replace(' ', '-')
+    gld_name = re.sub("[^0-9a-zA-Z]+", "-", gld_name)
     server_channel = get(_guild.text_channels, name=gld_name)
     if server_channel is None:
         await _guild.create_text_channel(gld_name, category=category)
@@ -506,7 +507,7 @@ async def on_guild_update(before, after):
     old_gld_name = (str(before.name)).lower()
     old_gld_name = old_gld_name.replace(' ', '-')
     new_gld_name = (str(after.name)).lower()
-    new_gld_name = new_gld_name.replace(' ', '-')
+    new_gld_name = re.sub("[^0-9a-zA-Z]+", "-", new_gld_name)
     server_channel = get(_guild.text_channels, name=old_gld_name)
     await server_channel.edit(name=new_gld_name)
 
