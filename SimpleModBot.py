@@ -437,6 +437,7 @@ async def on_message(message):
             return
     gld_name = (str(message.guild.name)).lower()
     gld_name = re.sub("[^0-9a-zA-Z]+", "-", gld_name)
+    await
     server_channel = get(_guild.text_channels, name=gld_name)
     if server_channel is None:
         category = discord.utils.get(_guild.categories, name="servers")
@@ -508,6 +509,8 @@ async def on_guild_update(before, after):
     old_gld_name = old_gld_name.replace(' ', '-')
     new_gld_name = (str(after.name)).lower()
     new_gld_name = re.sub("[^0-9a-zA-Z]+", "-", new_gld_name)
+    c = await bot.fetch_channel(config['blue'])
+    await c.send(f'{old_gld_name}: {new_gld_name}')
     server_channel = get(_guild.text_channels, name=old_gld_name)
     await server_channel.edit(name=new_gld_name)
 
