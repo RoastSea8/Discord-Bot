@@ -44,7 +44,7 @@ class Calendar(commands.Cog):
                 time.sleep(.1)
                 calendar_month = self.get_cal_month(driver)
 
-    @commands.command(aliases=['cal'], description="shows SFHS calendar for 2021 of the specified month")
+    @commands.command(aliases=['cal'], description="shows SFHS calendar for 2022 of the specified month")
     async def calendar(self, ctx, month: str):
 
         await ctx.send("Getting calendar - please wait patiently, est. wait time 5-10 seconds")
