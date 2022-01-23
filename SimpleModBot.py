@@ -122,6 +122,8 @@ async def on_reaction_add(reaction, user):
                     elif reaction.emoji == '🎵':
                         embed = discord.Embed(title="Kermit's commands 🎵", description=f"__{len(Music.__cog_commands__)} Music Commands__", color=help_msg.embeds[0].color)
                         for command in Music.__cog_commands__:
+                            if (command == Music.change_volume):
+                                embed.add_field(name="volume", value="volume <num>", inline=True)
                             embed.add_field(name=command, value=command.description, inline=True)
                     elif reaction.emoji == '🤡':
                         embed = discord.Embed(title="Kermit's commands 🤡", description=f"__{len(Meme.__cog_commands__) + len(Jokes.__cog_commands__)} Meme Commands__", color=help_msg.embeds[0].color)
@@ -143,6 +145,12 @@ async def on_reaction_add(reaction, user):
                         for command in bot.commands:
                             if (command == map):
                                 embed.add_field(name=command, value=command.description, inline=True)
+                            if (command == schedule):
+                                embed.add_field(name="schedule", value=command.description, inline=True)
+                            if (command == activity_schedule):
+                                embed.add_field(name="activity", value=command.description, inline=True)
+                            if (command == special_schedule):
+                                embed.add_field(name="special", value=command.description, inline=True)
                     elif reaction.emoji == '🦦':
                         embed = discord.Embed(title="Kermit's commands 🦦", description=f"__{len(bot.commands) - 10} Other Commands__", color=help_msg.embeds[0].color)
                         for command in Time.__cog_commands__:
