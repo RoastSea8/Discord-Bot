@@ -248,7 +248,7 @@ async def say(ctx, arg1, *, arg):
     except:
         pass
     try:
-        editMsgs.append((msg, msg.guild.name))
+        editMsgs.append((msg.content, msg.guild.name))
     except:
         pass
 
