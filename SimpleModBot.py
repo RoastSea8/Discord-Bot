@@ -265,7 +265,7 @@ async def edit(ctx, msgIndex: int, *, edited):
 @commands.is_owner()
 async def editList(ctx):
     global editMsgList
-    await ctx.send(f"[{x[0]}, {x[2]}]" for x in editMsgList)
+    print(f"[{x[0]}, {x[2]}]" for x in reversed(editMsgList))
 
 
 # speak command
