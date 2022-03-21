@@ -266,7 +266,7 @@ async def edit(ctx, msgIndex: int, *, edited):
 @commands.is_owner()
 async def editList(ctx):
     global editMsgList
-    await ctx.send(reversed(list(editMsgList)))
+    await ctx.send(list(reversed(editMsgList)))
 
 
 # speak command
