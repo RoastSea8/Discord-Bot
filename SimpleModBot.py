@@ -243,7 +243,7 @@ async def say(ctx, arg1, *, arg):
     await channel.trigger_typing()
     msg = await channel.send(arg)
     try:
-        editMsgList.append((arg1, msg.id))
+        editMsgList.append((arg1, msg.id, msg.guild.name))
     except:
         pass
 
@@ -260,6 +260,12 @@ async def edit(ctx, msgIndex: int, *, edited):
         await message.edit(content=str(edited))
     except:
         return
+
+@bot.command()
+@commands.is_owner()
+async def editList(ctx):
+    global editMsgList
+    await ctx.send(f"[{x[0]}, {x[2]}]" for x in editMsgList)
 
 
 # speak command
@@ -287,6 +293,7 @@ async def reply(ctx, arg1, *, arg):
 # poll command
 @bot.command(brief="sets up a poll", description="sets up a poll")
 async def poll(ctx, *, arg):
+    global editMsgList
     # await ctx.send('{} Poll started by {}: '.format(ctx.message.guild.roles[0], ctx.author.mention))
     await ctx.message.delete()
     await ctx.send('Poll started by {}: '.format(ctx.author.mention))
@@ -294,6 +301,10 @@ async def poll(ctx, *, arg):
     await m.add_reaction('👍')
     await m.add_reaction('👎')
     await m.add_reaction('🤷')
+    try:
+        editMsgList.append((arg, m.id, ctx.guild.name))
+    except:
+        pass
 
 poll_options = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶',
                 '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿']
