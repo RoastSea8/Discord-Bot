@@ -226,11 +226,12 @@ async def search(ctx, *, query):
 
 
 editMsgList = []
+editMsgs = []
 # text-through command
 @bot.command()
 @commands.is_owner()
 async def say(ctx, arg1, *, arg):
-    global editMsgList
+    global editMsgList, editMsgs
     if arg1.isnumeric():
         arg1 = int(arg1)
     else:
@@ -243,7 +244,11 @@ async def say(ctx, arg1, *, arg):
     await channel.trigger_typing()
     msg = await channel.send(arg)
     try:
-        editMsgList.append((arg1, msg.id, msg.guild.name))
+        editMsgList.append((arg1, msg.id))
+    except:
+        pass
+    try:
+        editMsgs.append((msg, msg.guild.name))
     except:
         pass
 
@@ -265,8 +270,8 @@ async def edit(ctx, msgIndex: int, *, edited):
 @bot.command()
 @commands.is_owner()
 async def editList(ctx):
-    global editMsgList
-    await ctx.send(list(reversed(editMsgList)))
+    global editMsgs
+    await ctx.send(list(reversed(editMsgs)))
 
 
 # speak command
@@ -294,7 +299,7 @@ async def reply(ctx, arg1, *, arg):
 # poll command
 @bot.command(brief="sets up a poll", description="sets up a poll")
 async def poll(ctx, *, arg):
-    global editMsgList
+    global editMsgList, editMsgs
     # await ctx.send('{} Poll started by {}: '.format(ctx.message.guild.roles[0], ctx.author.mention))
     await ctx.message.delete()
     await ctx.send('Poll started by {}: '.format(ctx.author.mention))
@@ -303,7 +308,11 @@ async def poll(ctx, *, arg):
     await m.add_reaction('👎')
     await m.add_reaction('🤷')
     try:
-        editMsgList.append((arg, m.id, ctx.guild.name))
+        editMsgList.append((ctx.channel.id, m.id))
+    except:
+        pass
+    try:
+        editMsgs.append((arg, m.guild.name))
     except:
         pass
 
