@@ -460,35 +460,6 @@ async def on_message(message):
         except IndexError:
             pass
 
-    _guild = bot.get_guild(config['bot_testing_server'])
-    for server in servers:
-        if str(message.guild.name) == server:
-            return
-    gld_name = (str(message.guild.name)).lower()
-    gld_name = re.sub("[^0-9a-zA-Z]+", "-", gld_name)
-    server_channel = get(_guild.text_channels, name=gld_name)
-    if server_channel is None:
-        category = discord.utils.get(_guild.categories, name="servers")
-        gld_name = (str(message.guild.name)).lower()
-        gld_name = re.sub("[^0-9a-zA-Z]+", "-", gld_name)
-        await _guild.create_text_channel(gld_name, category=category)
-        server_channel = get(_guild.text_channels, name=gld_name)
-    embed = discord.Embed(
-        title=f'{message.channel}', description=f'{message.content}'
-    )
-    embed.set_author(name=message.author.display_name, icon_url=message.author.avatar_url)
-    await server_channel.send(embed=embed)
-    try:
-        await server_channel.send(message.attachments[0].url)
-    except IndexError:
-        pass
-    embeds = message.embeds
-    if not embeds:
-        return
-    else:
-        embed = (message.embeds)[0]
-        await server_channel.send(embed=embed)
-
 
 # missing arguments event
 @bot.event
@@ -509,15 +480,6 @@ async def on_guild_join(guild):
     channel = await bot.fetch_channel(config['server_invites_channel'])
     await channel.send(f'Kermit has been added to: {guild}, owned by {guild.owner.name}')
 
-    _guild = bot.get_guild(config['bot_testing_server'])
-
-    category = discord.utils.get(_guild.categories, name="servers")
-    gld_name = (str(guild.name)).lower()
-    gld_name = re.sub("[^0-9a-zA-Z]+", "-", gld_name)
-    server_channel = get(_guild.text_channels, name=gld_name)
-    if server_channel is None:
-        await _guild.create_text_channel(gld_name, category=category)
-
 
 @bot.event
 async def on_guild_remove(guild):
@@ -530,15 +492,6 @@ async def on_guild_update(before, after):
     channel = await bot.fetch_channel(config['server_invites_channel'])
     if before.name != after.name:
         await channel.send(f'{before.name} was changed to {after.name}')
-
-    _guild = bot.get_guild(config['bot_testing_server'])
-    category = discord.utils.get(_guild.categories, name="servers")
-    old_gld_name = (str(before.name)).lower()
-    old_gld_name = old_gld_name.replace(' ', '-')
-    new_gld_name = (str(after.name)).lower()
-    new_gld_name = re.sub("[^0-9a-zA-Z]+", "-", new_gld_name)
-    server_channel = get(_guild.text_channels, name=old_gld_name)
-    await server_channel.edit(name=new_gld_name)
 
 
 # kick command
