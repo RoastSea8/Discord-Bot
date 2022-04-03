@@ -10,18 +10,20 @@ class Status(commands.Cog):
     @tasks.loop(seconds=5)
     async def change_status(self):
         await self.bot.change_presence(activity=(next(self.activity)))
-        
+
     @commands.Cog.listener()
     async def on_ready(self):
         await self.bot.wait_until_ready()
         total_members = 0
         for guild in self.bot.guilds:
             total_members += guild.member_count
-        self.status = ["ikezi's dictatorship", "that's fantaaaaaaaastic", "balls break noses"] # ,help | @Kermit, f"on {len(self.bot.guilds)} servers"
+        self.status = ["mc with foy", 'ikezi trippin',
+                       "ikezi without a mask"]  # ,help | @Kermit, f"on {len(self.bot.guilds)} servers"
 
         self.activity = cycle([discord.Game(name=self.status[0]), discord.Activity(type=discord.ActivityType.listening,
-                        name=(self.status[1])), discord.Activity(type=discord.ActivityType.watching, name=(self.status[2]))])
-        
+                                                                                   name=(self.status[1])),
+                               discord.Activity(type=discord.ActivityType.watching, name=(self.status[2]))])
+
         self.change_status.start()
 
 

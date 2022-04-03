@@ -11,6 +11,7 @@ from discord.utils import get
 import asyncio
 import sys
 import requests
+import re
 from bs4 import BeautifulSoup
 from googletrans import Translator
 from cogs.define import Define
@@ -199,6 +200,22 @@ async def delete(ctx, amount: int):
     await ctx.channel.purge(limit=amount + 1)
 
 
+@bot.command(description="deletes channel", aliases=["d_c"])
+@commands.is_owner()
+async def delete_channel(ctx, channel_name):
+    await ctx.send(f"Are you sure you want to delete channel {channel_name}?")
+    msg = await bot.wait_for(event='message', check=lambda message: message.author == ctx.author, timeout=10.0)
+    if msg.content == "yes" or msg.content == "Yes":
+        existing_channel = discord.utils.get(ctx.guild.channels, name=channel_name)
+        if existing_channel is not None:
+            await existing_channel.delete()
+            await ctx.send(f"{channel_name} deleted")
+        else:
+            await ctx.send(f'No channel named, "{channel_name}", was found')
+    else:
+        await ctx.send(f"deletion of {channel_name} canceled")
+
+
 @bot.command(description="returns images of input from Google")
 async def search(ctx, *, query):
     res = requests.get("https://www.google.co.in/search?q="+query+"&source=lnms&tbm=isch")
@@ -209,11 +226,12 @@ async def search(ctx, *, query):
 
 
 editMsgList = []
+editMsgs = []
 # text-through command
 @bot.command()
 @commands.is_owner()
 async def say(ctx, arg1, *, arg):
-    global editMsgList
+    global editMsgList, editMsgs
     if arg1.isnumeric():
         arg1 = int(arg1)
     else:
@@ -227,6 +245,10 @@ async def say(ctx, arg1, *, arg):
     msg = await channel.send(arg)
     try:
         editMsgList.append((arg1, msg.id))
+    except:
+        pass
+    try:
+        editMsgs.append((msg.content, msg.guild.name))
     except:
         pass
 
@@ -243,6 +265,13 @@ async def edit(ctx, msgIndex: int, *, edited):
         await message.edit(content=str(edited))
     except:
         return
+
+
+@bot.command()
+@commands.is_owner()
+async def editList(ctx):
+    global editMsgs
+    await ctx.send(list(reversed(editMsgs)))
 
 
 # speak command
@@ -270,6 +299,7 @@ async def reply(ctx, arg1, *, arg):
 # poll command
 @bot.command(brief="sets up a poll", description="sets up a poll")
 async def poll(ctx, *, arg):
+    global editMsgList, editMsgs
     # await ctx.send('{} Poll started by {}: '.format(ctx.message.guild.roles[0], ctx.author.mention))
     await ctx.message.delete()
     await ctx.send('Poll started by {}: '.format(ctx.author.mention))
@@ -277,6 +307,14 @@ async def poll(ctx, *, arg):
     await m.add_reaction('👍')
     await m.add_reaction('👎')
     await m.add_reaction('🤷')
+    try:
+        editMsgList.append((ctx.channel.id, m.id))
+    except:
+        pass
+    try:
+        editMsgs.append((arg, m.guild.name))
+    except:
+        pass
 
 poll_options = ['🇦', '🇧', '🇨', '🇩', '🇪', '🇫', '🇬', '🇭', '🇮', '🇯', '🇰', '🇱', '🇲', '🇳', '🇴', '🇵', '🇶',
                 '🇷', '🇸', '🇹', '🇺', '🇻', '🇼', '🇽', '🇾', '🇿']
@@ -386,7 +424,7 @@ async def secret(ctx, guild_name, channel_name, *, message):
                 await channel.send(message)
 
 emojis = ['🤡', '😐', '😳', '🧢', '🏳️‍🌈', '💩', '😈', '🤓']
-servers = ['BotTestingServer']
+servers = ['BotTestingServer', 'denny & danny friends']
 
 
 @bot.event
@@ -400,6 +438,16 @@ async def on_message(message):
 
     await bot.process_commands(message)
 
+    # emoji = random.choice(emojis)
+    # last_emote = emoji
+    # if (emoji == last_emote):
+    #     emoji = random.choice(emojis)
+    # if (randrange(15) == 1):
+    #     await message.add_reaction(emoji)
+    #     if (randrange(6) == 1):
+    #         emoji = random.choice(emojis)
+    #         await message.add_reaction(emoji)
+
     if str(bot.user.id) in message.content:
         ctx = await bot.get_context(message)
         await ctx.invoke(help)
@@ -411,11 +459,6 @@ async def on_message(message):
             await channel.send(message.attachments[0].url)
         except IndexError:
             pass
-
-    _guild = bot.get_guild(config['bot_testing_server'])
-    for server in servers:
-        if str(message.guild.name) == server:
-            return
 
 
 # missing arguments event
@@ -435,13 +478,7 @@ async def on_command_error(ctx, error):
 @bot.event
 async def on_guild_join(guild):
     channel = await bot.fetch_channel(config['server_invites_channel'])
-    await channel.send(f'Kermit has been added to: {guild}')
-
-    _guild = bot.get_guild(config['bot_testing_server'])
-
-    category = discord.utils.get(_guild.categories, name="servers")
-    gld_name = (str(guild.name)).lower()
-    await _guild.create_text_channel(gld_name, category=category)
+    await channel.send(f'Kermit has been added to: {guild}, owned by {guild.owner.name}')
 
 
 @bot.event

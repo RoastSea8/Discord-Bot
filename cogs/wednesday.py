@@ -14,7 +14,7 @@ class Wednesday(commands.Cog):
         self.channel_2 = None
         self.channel_3 = None
         self.time = datetime.datetime.now
-    
+
     @tasks.loop(hours=1)
     async def time_checker(self):
         self.time = datetime.datetime.now
@@ -61,12 +61,12 @@ class Wednesday(commands.Cog):
                 await self.channel.send(":/")
             except:
                 pass
-    
+
     @commands.Cog.listener()
     async def on_ready(self):
         await self.bot.wait_until_ready()
         print("day: " + str(datetime.datetime.today().weekday()))
-        print("hour: " + str(datetime.datetime.now().hour)) 
+        print("hour: " + str(datetime.datetime.now().hour))
         self.time_checker.start()
 
 
