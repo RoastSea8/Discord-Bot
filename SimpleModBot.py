@@ -535,11 +535,9 @@ async def unban(ctx, *, member):
 # language translate command
 @bot.command(description="<lang to translate to> <message>", aliases=['tr', 't', 'tra', 'tran', 'trans'])
 async def translate(ctx, lang, *, msg):
-    if ctx.author.id == config['steve']:
-        return
     translator = Translator()
     translation = translator.translate(msg, dest=lang)
-    await ctx.send(translation.text)
+    await ctx.send(f"{ctx.author.display_name} says: {translation.text}")
 
 
 # load cog command
