@@ -537,7 +537,7 @@ async def unban(ctx, *, member):
 async def translate(ctx, lang, *, msg):
     translator = Translator()
     translation = translator.translate(msg, dest=lang)
-    await ctx.send(f"{ctx.author.display_name} says: {translation.text}")
+    await ctx.send(f"{ctx.author.username} says: {translation.text}")
 
 
 # load cog command
