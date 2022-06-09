@@ -17,8 +17,8 @@ class Status(commands.Cog):
         total_members = 0
         for guild in self.bot.guilds:
             total_members += guild.member_count
-        self.status = ["in Alabamian bathrooms", 'ikezi cap',
-                       "foy play mc"]  # ,help | @Kermit, f"on {len(self.bot.guilds)} servers"
+        self.status = ['🏳‍🌈', '🏳‍🌈', '🏳‍🌈'] # ["in Alabamian bathrooms", 'ikezi cap',
+                       # "foy play mc"]  # ,help | @Kermit, f"on {len(self.bot.guilds)} servers"
 
         self.activity = cycle([discord.Game(name=self.status[0]), discord.Activity(type=discord.ActivityType.listening,
                                                                                    name=(self.status[1])),
