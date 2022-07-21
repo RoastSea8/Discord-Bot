@@ -462,15 +462,7 @@ async def on_message(message):
         if message.author.name not in config:
             config[str(message.author.name)] = int(message.author.id)
             with open('config.json', 'w') as config_json:
-                json.dump(config_json, f)
-            try:
-                channel = bot.get_channel(config["blue"])
-                exclude_keys = ["troll_token"]
-                updated_dict = {k: config[k] for k in set(list(config.keys())) - set(exclude_keys)}
-                await channel.send(f"```json\n{updated_dict}```")
-            except:
-                pass
-
+                json.dump(config, config_json)
 
 # missing arguments event
 @bot.event
