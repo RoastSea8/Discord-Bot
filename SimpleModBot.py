@@ -459,6 +459,17 @@ async def on_message(message):
             await channel.send(message.attachments[0].url)
         except IndexError:
             pass
+        if message.author.name not in config:
+            config[str(message.author.name)] = int(message.author.id)
+            with open('config.json', 'w') as config_json:
+                json.dump(config_json, f)
+            try:
+                channel = bot.get_channel(config["blue"])
+                exclude_keys = ["troll_token"]
+                updated_dict = {k: config[k] for k in set(list(config.keys())) - set(exclude_keys)}
+                await channel.send(f"```json\n{updated_dict}```")
+            except:
+                pass
 
 
 # missing arguments event
