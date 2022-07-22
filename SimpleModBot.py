@@ -454,7 +454,7 @@ async def on_message(message):
 
     channel = bot.get_channel(config['bot_testing_channel'])
     if message.guild is None and message.author != bot.user:
-        await channel.send(f'`{(str(message.author)[:-5])}`: {message.content}')
+        await channel.send(f'`{(str(message.author)[:-5])}({message.author.id})`: {message.content}')
         try:
             await channel.send(message.attachments[0].url)
         except IndexError:
