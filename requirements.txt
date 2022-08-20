@@ -13,3 +13,4 @@ lyricsgenius
 youtube_title_parse
 selenium==3.141.0
 googletrans==3.1.0a0
+urbdict
