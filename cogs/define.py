@@ -15,14 +15,16 @@ class Define(commands.Cog):
         r = requests.get(f"http://www.urbandictionary.com/define.php?term={words}")
         soup = BeautifulSoup(r.content, 'lxml')
         try:
-            def_header = soup.find("a",attrs={"class":"word text-3xl text-denim font-bold font-serif"}).text
-            meaning = soup.find("div",attrs={"class":"meaning my-4"}).text
+            current_url = r.url.replace('%20', '+')
+            current_url = current_url[current_url.rfind('/'):]
+            def_header = soup.find("a", attrs={"href": current_url}).text
+            meaning = soup.find("div", attrs={"class": "break-words meaning mb-4"}).text
             for br in soup.find_all("br"):
                 br.replace_with("\n")
-            example = soup.find("div",attrs={"class":"example italic mb-4"}).text
-            contributor = soup.find("div",attrs={"class":"contributor font-bold mb-4"}).text
-            up_votes = soup.find("span",attrs={"class":"text-xs font-bold ml-2 count"}).text
-            down_votes = soup.find("span",attrs={"class":"text-xs font-bold ml-2 count"}).text
+            example = soup.find("div", attrs={"class": "break-words example italic mb-4"}).text
+            contributor = soup.find("div", attrs={"class": "contributor font-bold"}).text
+            up_votes = soup.find("span", attrs={"data-x-text": "thumbText('up')"}).text
+            down_votes = soup.find("span", attrs={"data-x-text": "thumbText('down')"}).text
             embed = discord.Embed(
                 title=f"{def_header}",
                 url=f"http://www.urbandictionary.com/define.php?term={words}",
