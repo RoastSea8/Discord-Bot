@@ -380,7 +380,7 @@ async def schedule(ctx):
 # provides activity school schedule pic
 @bot.command(brief="sends activity school schedule", description="sends activity school schedule", aliases=["a_schedule", "aschedule", "activity"])
 async def activity_schedule(ctx):
-    await ctx.send(file=discord.File('media/alt_day_schedule.png'))
+    await ctx.send(file=discord.File('media/activity_liturgy_schedule.png'))
 
 
 # provides special school schedule pic
