@@ -374,19 +374,19 @@ async def map(ctx):
 # provides school schedule pic
 @bot.command(brief="sends school schedule b/g", description="sends school schedule b/g")
 async def schedule(ctx):
-    await ctx.send(file=discord.File('media/schedule3.png'))
+    await ctx.send(file=discord.File('media/alt_day_schedule.png'))
 
 
 # provides activity school schedule pic
 @bot.command(brief="sends activity school schedule", description="sends activity school schedule", aliases=["a_schedule", "aschedule", "activity"])
 async def activity_schedule(ctx):
-    await ctx.send(file=discord.File('media/activitySchedule.png'))
+    await ctx.send(file=discord.File('media/alt_day_schedule.png'))
 
 
 # provides special school schedule pic
 @bot.command(brief="sends special school schedule (white/virtual)", description="sends special school schedule (white/virtual)", aliases=["s_schedule", "sschedule", "special"])
 async def special_schedule(ctx):
-    await ctx.send(file=discord.File('media/specialSchedule.png'))
+    await ctx.send(file=discord.File('media/special_schedule.png'))
 
 
 # get names of servers that bot belongs to
