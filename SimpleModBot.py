@@ -543,6 +543,12 @@ async def translate(ctx, lang, *, msg):
     await ctx.send(f"{ctx.author.name} says: {translation.text}")
 
 
+# chance nickname command
+@bot.command()
+async def cn(ctx, member: discord.Member, nick):
+    await member.edit(nick=nick)
+
+
 # load cog command
 @bot.command(description="loads extensions")
 @commands.is_owner()
