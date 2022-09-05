@@ -545,6 +545,7 @@ async def translate(ctx, lang, *, msg):
 
 # chance nickname command
 @bot.command()
+@commands.is_owner()
 async def cn(ctx, member: discord.Member, *, nick):
     await member.edit(nick=nick)
 
