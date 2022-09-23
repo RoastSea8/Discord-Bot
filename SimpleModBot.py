@@ -76,7 +76,7 @@ async def help_(ctx):
     await help_cmd.add_reaction('🎮')
     await help_cmd.add_reaction('🤡')
     await help_cmd.add_reaction('🤔')
-    await help_cmd.add_reaction('🦦')
+    # await help_cmd.add_reaction('🦦')
 
 used_commands = []
 for command in Define.__cog_commands__:
