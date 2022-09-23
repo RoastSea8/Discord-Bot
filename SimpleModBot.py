@@ -133,7 +133,7 @@ async def on_reaction_add(reaction, user):
                         for command in Jokes.__cog_commands__:
                             embed.add_field(name=command, value=command.description, inline=False)
                     elif reaction.emoji == '🤔':
-                        length = len(Define.__cog_commands__) + len(Howdoi.__cog_commands__) + len(Calculus.__cog_commands__) + len(Calendar.__cog_commands__)
+                        length = len(Define.__cog_commands__) + len(Howdoi.__cog_commands__) + len(Calculus.__cog_commands__)
                         embed = discord.Embed(title="Kermit's commands 🤔", description=f"__{length} Intellectual Commands__", color=help_msg.embeds[0].color)
                         for command in Define.__cog_commands__:
                             embed.add_field(name=command, value=command.description, inline=True)
@@ -141,17 +141,6 @@ async def on_reaction_add(reaction, user):
                             embed.add_field(name=command, value=command.description, inline=True)
                         for command in Calculus.__cog_commands__:
                             embed.add_field(name=command, value=command.description, inline=True)
-                        for command in Calendar.__cog_commands__:
-                            embed.add_field(name=command, value=command.description, inline=True)
-                        for command in bot.commands:
-                            if (command == map):
-                                embed.add_field(name=command, value=command.description, inline=True)
-                            if (command == schedule):
-                                embed.add_field(name="schedule", value=command.description, inline=True)
-                            if (command == activity_schedule):
-                                embed.add_field(name="activity", value=command.description, inline=True)
-                            if (command == special_schedule):
-                                embed.add_field(name="special", value=command.description, inline=True)
                     elif reaction.emoji == '🦦':
                         embed = discord.Embed(title="Kermit's commands 🦦", description=f"__{len(bot.commands) - 10} Other Commands__", color=help_msg.embeds[0].color)
                         for command in Time.__cog_commands__:
