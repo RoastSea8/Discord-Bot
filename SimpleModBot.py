@@ -539,6 +539,35 @@ async def cn(ctx, member: discord.Member, *, nick):
     await member.edit(nick=nick)
 
 
+# add reaction
+@bot.command()
+@commands.is_owner()
+async def react(ctx, emoji, message_id, channel_id=None):
+    channel = ctx.channel
+    if channel_id:
+        if channel_id.isnumeric():
+            channel = bot.get_channel(int(channel_id))
+        else:
+            channel = bot.get_channel(config[channel_id])
+    message = await channel.fetch_message(message_id)
+    await message.add_reaction(emoji)
+
+
+# remove reaction
+@bot.command()
+@commands.is_owner()
+async def unreact(ctx, emoji, message_id, channel_id=None):
+    channel = ctx.channel
+    if channel_id:
+        if channel_id.isnumeric():
+            channel = bot.get_channel(int(channel_id))
+        else:
+            channel = bot.get_channel(config[channel_id])
+    message = await channel.fetch_message(message_id)
+    member = bot.user
+    await message.remove_reaction(emoji, member)
+
+
 # load cog command
 @bot.command(description="loads extensions")
 @commands.is_owner()
