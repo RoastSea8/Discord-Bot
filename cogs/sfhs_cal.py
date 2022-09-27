@@ -87,6 +87,7 @@ class Calendar(commands.Cog):
 
         driver.save_screenshot("media/screenshot.png")
 
+        await ctx.send(str(driver.current_url))
         await ctx.send(file=discord.File("media/screenshot.png"))
 
         try:
