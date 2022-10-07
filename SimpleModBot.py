@@ -219,7 +219,7 @@ editMsgs = []
 # text-through command
 @bot.command()
 async def say(ctx, arg1, *, arg):
-    if ctx.author.id != config["my_id"] or ctx.author.id != 835980392048885820:
+    if ctx.author.id != config["my_id"] and ctx.author.id != 835980392048885820:
         return
     global editMsgList, editMsgs
     if arg1.isnumeric():
