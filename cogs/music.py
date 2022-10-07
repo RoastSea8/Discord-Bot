@@ -8,8 +8,8 @@ import sys
 import traceback
 from async_timeout import timeout
 from functools import partial
-import youtube_dl
-from youtube_dl import YoutubeDL
+import yt_dlp
+from yt_dlp import YoutubeDL
 from paginator import Pag
 import re
 import lyricsgenius
@@ -26,7 +26,7 @@ with open('config.json') as f:
     config = json.load(f)
 
 # Suppress noise about console usage from errors
-youtube_dl.utils.bug_reports_message = lambda: ''
+yt_dlp.utils.bug_reports_message = lambda: ''
 
 ytdlopts = {
     'format': 'bestaudio/best',
