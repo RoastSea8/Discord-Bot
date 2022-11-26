@@ -351,7 +351,7 @@ class Music(commands.Cog):
             player.source.volume = volume / 100
             await ctx.reply('Volume of the player set to {}%'.format(volume))
 
-    @commands.command(name='now', aliases=['current', 'playing'])
+    @commands.command(name='now', aliases=['current', 'playing', 'np'])
     async def _now(self, ctx: commands.Context):
         """Displays the currently playing song."""
         embed = ctx.voice_state.current.create_embed()
@@ -413,7 +413,7 @@ class Music(commands.Cog):
         else:
             await ctx.reply('You have already voted to skip this song.')
 
-    @commands.command(name='queue')
+    @commands.command(name='queue', aliases=['q'])
     async def _queue(self, ctx: commands.Context, *, page: int = 1):
 
         """Shows the player's queue.
@@ -437,7 +437,7 @@ class Music(commands.Cog):
                  .set_footer(text='Viewing page {}/{}'.format(page, pages)))
         await ctx.reply(embed=embed)
 
-    @commands.command(name='shuffle')
+    @commands.command(name='shuffle', aliases=['mix', 'random', 'randomize'])
     async def _shuffle(self, ctx: commands.Context):
         """Shuffles the queue."""
 
@@ -447,7 +447,7 @@ class Music(commands.Cog):
         ctx.voice_state.songs.shuffle()
         await ctx.message.add_reaction('✅')
 
-    @commands.command(name='remove')
+    @commands.command(name='remove', aliases=['rm'])
     async def _remove(self, ctx: commands.Context, index: int):
         """Removes a song from the queue at a given index."""
 
@@ -457,7 +457,7 @@ class Music(commands.Cog):
         ctx.voice_state.songs.remove(index - 1)
         await ctx.message.add_reaction('✅')
 
-    @commands.command(name='loop')
+    @commands.command(name='loop', aliases=['repeat'])
     async def _loop(self, ctx: commands.Context):
         """Loops the currently playing song.
         Invoke this command again to unloop the song.
