@@ -1,4 +1,4 @@
-import logging, asyncio, functools, math, random, discord, yt_dlp
+import itertools, logging, asyncio, functools, math, random, discord, yt_dlp
 from discord.ext import commands
 from yt_dlp import utils
 from async_timeout import timeout
@@ -146,7 +146,7 @@ class Song:
                  .add_field(name='Uploader', value='[{0.source.uploader}]({0.source.uploader_url})'.format(self))
                  .add_field(name='URL', value='[Click]({0.source.url})'.format(self))
                  .set_thumbnail(url=self.source.thumbnail)
-                 .set_author(name=self.requester.name, icon_url=self.requester.avatar.url))
+                 .set_author(name=self.requester.name, icon_url=self.requester.avatar_url))
         return embed
 
 
@@ -293,7 +293,7 @@ class Music(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message):
-        if message.author.id != bot.user.id:
+        if message.author.id != self.bot.user.id:
             print(f"{message.guild}/{message.channel}/{message.author.name}>{message.content}")
             if message.embeds:
                 print(message.embeds[0].to_dict())
