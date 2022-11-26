@@ -97,5 +97,8 @@ ENV/
 # pycharm settings
 venv
 
+# token
+token.txt
+
 # gitignore
 .gitignore
