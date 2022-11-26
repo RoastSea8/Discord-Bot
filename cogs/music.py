@@ -16,9 +16,6 @@ import lyricsgenius
 from youtube_title_parse import get_artist_title
 import os
 
-invoke = False
-passed = False
-
 token = "niXRSH49z_ZjzIv544sX6jB2zME5BHXA3_GwA7pdDzkd1PB_t97Pi-N_RGi6h-N0"
 genius = lyricsgenius.Genius(token)
 
@@ -28,27 +25,8 @@ with open('config.json') as f:
 # Suppress noise about console usage from errors
 yt_dlp.utils.bug_reports_message = lambda: ''
 
-ytdlopts = {
-    'format': 'bestaudio/best',
-    'outtmpl': 'downloads/%(extractor)s-%(id)s-%(title)s.%(ext)s',
-    'restrictfilenames': True,
-    'noplaylist': True,
-    'nocheckcertificate': True,
-    'ignoreerrors': False,
-    'logtostderr': False,
-    'quiet': True,
-    'no_warnings': True,
-    'default_search': 'auto',
-    'source_address': '0.0.0.0'  # ipv6 addresses cause issues sometimes
-}
-
-ffmpegopts = {
-    'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
-    'options': '-vn'
-}
-
-ytdl = YoutubeDL(ytdlopts)
-
+class YTDLError(Exception):
+    pass
 
 class VoiceConnectionError(commands.CommandError):
     """Custom Exception class for connection errors."""
@@ -57,8 +35,33 @@ class VoiceConnectionError(commands.CommandError):
 class InvalidVoiceChannel(VoiceConnectionError):
     """Exception for cases of invalid Voice Channels."""
 
+invoke = False
+passed = False
 
 class YTDLSource(discord.PCMVolumeTransformer):
+    ytdlopts = {
+        'extractaudio': True,
+        'format': 'bestaudio/best',
+        'outtmpl': '%(extractor)s-%(id)s-%(title)s.%(ext)s',
+        'restrictfilenames': True,
+        'noplaylist': True,
+        'nocheckcertificate': True,
+        'ignoreerrors': False,
+        'logtostderr': False,
+        'quiet': True,
+        'no_warnings': True,
+        'default_search': 'auto',
+        'source_address': '0.0.0.0',
+    }
+
+    ffmpegopts = {
+        'before_options': '-reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5',
+        'options': '-vn -c:a copy',
+    }
+
+    ytdl = yt_dlp.YoutubeDL(ytdlopts)
+    invoke = False
+    passed = False
 
     def __init__(self, source, *, data, requester):
         super().__init__(source)
@@ -87,7 +90,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
     async def create_source(cls, ctx, search: str, *, loop, download=False):
         loop = loop or asyncio.get_event_loop()
 
-        to_run = partial(ytdl.extract_info, url=search, download=download)
+        to_run = partial(cls.ytdl.extract_info, url=search, download=download)
         data = await loop.run_in_executor(None, to_run)
 
         if 'entries' in data:
@@ -100,7 +103,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
         await ctx.send(embed=embed)
 
         if download:
-            source = ytdl.prepare_filename(data)
+            source = cls.ytdl.prepare_filename(data)
         else:
             if passed:
                 return {'webpage_url': data['webpage_url'], 'requester': ctx.author, 'title': data['title'],
@@ -109,7 +112,7 @@ class YTDLSource(discord.PCMVolumeTransformer):
                 return {'webpage_url': data['webpage_url'], 'requester': ctx.author, 'title': data['title'],
                         'duration': data['duration']}
 
-        return cls(discord.FFmpegPCMAudio(source), data=data, requester=ctx.author)
+        return cls(discord.FFmpegPCMAudio(source), data=data, **cls.ffmpegopts, requester=ctx.author)
 
     @classmethod
     async def regather_stream(cls, data, *, loop):
@@ -118,10 +121,10 @@ class YTDLSource(discord.PCMVolumeTransformer):
         loop = loop or asyncio.get_event_loop()
         requester = data['requester']
 
-        to_run = partial(ytdl.extract_info, url=data['webpage_url'], download=False)
+        to_run = partial(cls.ytdl.extract_info, url=data['webpage_url'], download=False)
         data = await loop.run_in_executor(None, to_run)
 
-        return cls(discord.FFmpegPCMAudio(data['url']), data=data, requester=requester)
+        return cls(discord.FFmpegPCMAudio(data['url']), **cls.ffmpegopts, data=data, requester=requester)
 
 
 class MusicPlayer:
