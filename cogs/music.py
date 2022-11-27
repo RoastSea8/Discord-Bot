@@ -291,13 +291,6 @@ class Music(commands.Cog):
     async def cog_command_error(self, ctx: commands.Context, error: commands.CommandError):
         await ctx.reply('An error occurred: {}'.format(str(error)))
 
-    @commands.Cog.listener()
-    async def on_message(self, message):
-        if message.author.id != self.bot.user.id:
-            print(f"{message.guild}/{message.channel}/{message.author.name}>{message.content}")
-            if message.embeds:
-                print(message.embeds[0].to_dict())
-
     @commands.command(name='join', invoke_without_subcommand=True)
     async def _join(self, ctx: commands.Context):
         """Joins a voice channel."""
